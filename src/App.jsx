@@ -15,7 +15,7 @@ function App() {
           <Route path="/character/:id" element={<CharDetails />} />
         </Routes>
         <div className="p-3 bg-dark text-white text-center">
-          <p className="lead pt-2">Made By <a href="https://github.com/aaryannipane" rel="`noreferrer`" target="_blank">Aryan Nipane</a></p>
+          <p className="lead pt-2">Made By <a href="https://github.com/aaryannipane">Aryan Nipane</a></p>
         </div>
       </BrowserRouter>
     </>
