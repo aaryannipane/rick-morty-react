@@ -2,28 +2,42 @@ import React from "react";
 import { useState } from "react";
 import { getCharacters, getSearchedCharacter } from "../../http";
 import { useEffect } from "react";
+import { useDebounce } from "../../hooks/useDebounce";
 
-export const Filter = ({ setCharacters }) => {
+export const Filter = ({ setCharacters, setLoading }) => {
   const [filterData, setFilterData] = useState({
     searchString: "",
     status: "",
     gender: "",
   });
+  const [searchValue, setSearchValue] = useState("");
+  const debouncedValue = useDebounce(searchValue);
 
   useEffect(() => {
     const filterCharacter = async () => {
       try {
-        console.log(filterData.gender);
+        // console.log(filterData.gender);
         if (filterData.searchString || filterData.status || filterData.gender) {
-          const data = await getSearchedCharacter(
-            filterData.searchString,
-            filterData.status,
-            filterData.gender
-          );
-          setCharacters(data?.data?.results);
+          try {
+            const data = await getSearchedCharacter(
+              filterData.searchString,
+              filterData.status,
+              filterData.gender
+            );
+            setCharacters(data?.data?.results);
+            
+          } catch (error) {
+            console.log(error.response.data);
+            setCharacters([]);
+
+          }finally{
+            setLoading(false);
+          }
         } else {
+          setLoading(true);
           const data = await getCharacters();
           setCharacters(data?.data?.results);
+          setLoading(false);
         }
       } catch (error) {
         console.log(error);
@@ -32,10 +46,16 @@ export const Filter = ({ setCharacters }) => {
     filterCharacter();
   }, [filterData]);
 
+  useEffect(() => {
+    setFilterData((data) => ({ ...data, ["searchString"]: debouncedValue }));
+  }, [debouncedValue]);
+
   const handleSearch = async (e) => {
     e.preventDefault();
+    setLoading(true);
     if (e.target.name === "search") {
-      setFilterData((data) => ({ ...data, ["searchString"]: e.target.value }));
+      // setFilterData((data) => ({ ...data, ["searchString"]: e.target.value }));
+      setSearchValue(e.target.value);
     }
 
     if (e.target.name === "status") {
@@ -44,8 +64,6 @@ export const Filter = ({ setCharacters }) => {
     if (e.target.name === "gender") {
       setFilterData((data) => ({ ...data, ["gender"]: e.target.value }));
     }
-
-    console.log("helo");
   };
   return (
     <div className="filterContainer rounded">
@@ -60,7 +78,7 @@ export const Filter = ({ setCharacters }) => {
               className="form-control"
               placeholder="Search Character"
               name="search"
-              value={filterData.searchString}
+              value={searchValue}
               onChange={handleSearch}
             />
           </div>
@@ -96,7 +114,8 @@ export const Filter = ({ setCharacters }) => {
             </select>
           </div>
           <div className="filterBtn mt-2 ">
-            <input type="reset"
+            <input
+              type="reset"
               className="btn btn-success w-100"
               onClick={() =>
                 setFilterData({ searchString: "", status: "", gender: "" })

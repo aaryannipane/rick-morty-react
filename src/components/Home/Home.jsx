@@ -4,7 +4,7 @@ import "../styles.css";
 import { Data } from "../../context/Context";
 import api, { fetchNextCharacters, getCharacters } from "../../http";
 import { CharacterCard } from "../CharacterCard/CharacterCard";
-import { Button, Spinner } from "react-bootstrap";
+import { Button, Spinner, Alert } from "react-bootstrap";
 import ReactPaginate from "react-paginate";
 import { Pagination } from "../Pagination/Pagination";
 import { useRef } from "react";
@@ -49,7 +49,7 @@ export const Home = () => {
 
   return (
     <>
-      {isLoading ? (
+      {/* {isLoading ? (
         <Button variant="dark" disabled className="m-auto d-block my-5">
           <Spinner
             as="span"
@@ -62,21 +62,45 @@ export const Home = () => {
         </Button>
       ) : (
         ""
-      )}
+      )} */}
 
       <div
         ref={containerRef}
         className="homeContainer"
         style={{ background: "#f1fbfe" }}
       >
-        <Filter setCharacters={setCharacters} />
+        <Filter setCharacters={setCharacters} setLoading={setLoading} />
         <div style={{ width: "78%" }}>
-          <div className="productContainer">
-            {characters?.map((item) => (
-              <CharacterCard key={item.id} character={item} />
-            ))}
-          </div>
-          <Pagination pageCount={pageCount} handlePageClick={handlePageClick} />
+          {isLoading ? (
+            <Button variant="dark" disabled className="m-auto d-block my-5">
+              <Spinner
+                as="span"
+                animation="grow"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+              Loading...
+            </Button>
+          ) : characters.length ==0 ? (
+            <div className="emptyMessage">
+              <Alert key={"info"} variant={"info"}>
+                No Character Found
+              </Alert>
+            </div>
+          ) : (
+            <>
+              <div className="productContainer">
+                {characters?.map((item) => (
+                  <CharacterCard key={item.id} character={item} />
+                ))}
+              </div>
+              <Pagination
+                pageCount={pageCount}
+                handlePageClick={handlePageClick}
+              />
+            </>
+          )}
         </div>
       </div>
     </>
