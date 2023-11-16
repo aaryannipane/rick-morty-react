@@ -21,7 +21,7 @@ Explore an immersive website powered by the [Rick and Morty characters API](http
    - **Custom Hook - useDebounce:** Created to encapsulate the logic for debouncing search input.
 
 5. **Context API with Reducer:**
-   - The application employs the Context API with a reducer to manage global state, facilitating efficient state updates and actions across components.
+   - The application employs the Context API with a reducer to manage the global state, facilitating efficient state updates and actions across components.
 
 ## Getting Started
 
@@ -29,12 +29,12 @@ To set up and run the project locally, follow these steps:
 
 1. **Clone the Repository:**
    ```
-   git clone https://github.com/your-username/rick-and-morty-explorer.git
+   git clone https://github.com/aaryannipane/rick-morty-react.git
    ```
 
 2. **Install Dependencies:**
    ```
-   cd rick-and-morty-explorer
+   cd rick-morty-react
    npm install
    ```
 
