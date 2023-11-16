@@ -37,7 +37,7 @@ export const Home = () => {
 
   // pagination function
   const handlePageClick = async (data) => {
-    console.log(data.selected);
+    // console.log(data.selected);
     try {
       const characterData = await fetchNextCharacters(data.selected + 1);
       setCharacters(characterData.data.results);

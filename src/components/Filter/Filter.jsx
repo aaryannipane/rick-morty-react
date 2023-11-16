@@ -118,7 +118,8 @@ export const Filter = ({ setCharacters, setLoading }) => {
               type="reset"
               className="btn btn-success w-100"
               onClick={() =>
-                setFilterData({ searchString: "", status: "", gender: "" })
+                {setSearchValue("")
+                setFilterData({ searchString: "", status: "", gender: "" })}
               }
             />
           </div>
